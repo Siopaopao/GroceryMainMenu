@@ -18,6 +18,8 @@ namespace GroceryStoreDiscountCalculator
             CannedGoods cg = new CannedGoods(cart);
             Fruits fruit = new Fruits(cart);
             Vegetables veggie = new Vegetables(cart);
+            Snacks sncks = new Snacks(cart);
+            Sweets sweet = new Sweets(cart);
 
             Boolean valid = true;
             while (valid)
@@ -53,6 +55,10 @@ namespace GroceryStoreDiscountCalculator
                         veggie.veggieMenu();
                         break;
                     case "5":
+                        sncks.snacksMenu();
+                        break;
+                    case "6":
+                        sweet.sweetsMenu();
                         break;
                     case "x":
                         cart.showCart();
@@ -1024,6 +1030,231 @@ namespace GroceryStoreDiscountCalculator
                         break;
                     default:
                         Console.WriteLine("Invalid input. Please try again.");
+                        break;
+                }
+            }
+        }
+    }
+    public class Snacks
+    {
+        private AddCart cart;
+
+
+        public Snacks(AddCart cart)
+        {
+            this.cart = cart;
+        }
+
+        public void snacksMenu()
+        {
+
+            ArrayList snacksList = new ArrayList()
+            {
+                new object[] { "Lays Classic (100g)", 65.00, 0 },
+                new object[] { "Lays Sour Cream & Onion (100g)", 70.00, 0 },
+                new object[] { "Doritos Nacho Cheese (150g)", 99.00, 0 },
+                new object[] { "Doritos Cool Ranch (150g)", 105.00, 0 },
+                new object[] { "Oreo Chocolate Cream (133g)", 75.00, 0 },
+                new object[] { "Oreo Vanilla Cream (133g)", 75.00, 0 },
+                new object[] { "Piattos Cheese (85g)", 40.00, 0 },
+                new object[] { "Piattos Sour Cream (85g)", 42.00, 0 },
+                new object[] { "Nova Multigrain Chips (80g)", 45.00, 0 },
+                new object[] { "Clover Chips Cheese (55g)", 37.00, 0 },
+                new object[] { "Chippy Chili & Cheese (110g)", 42.00, 0 }
+            };
+
+            bool valid = true;
+            while (valid)
+            {
+                Console.WriteLine("============= SNACKS MENU =============");
+                Console.WriteLine("[0] Search an Item");
+                Console.WriteLine("===== PRODUCT ==================================== PRICE =====");
+
+                for (int i = 0; i < snacksList.Count; i++)
+                {
+                    object[] product = (object[])snacksList[i];
+                    Console.WriteLine($"{i + 1,2}. {product[0],-40} PHP {product[1],8:F2}");
+                }
+
+                Console.WriteLine("[x] Return to Main Menu");
+                Console.WriteLine("============================================");
+                Console.Write("Enter product number: ");
+                string choice = Console.ReadLine();
+                Console.Clear();
+
+                switch (choice)
+                {
+                    case "0":
+                        Console.Write("Enter snack name: ");
+                        string search = Console.ReadLine().ToLower();
+
+                        Console.WriteLine("===== PRODUCT ==================================== PRICE =====");
+                        bool found = false;
+                        foreach (object[] product in snacksList)
+                        {
+                            string productName = product[0].ToString().ToLower();
+                            if (productName.Contains(search))
+                            {
+                                Console.WriteLine($"{product[0],-40} PHP {product[1],8:F2}");
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            Console.WriteLine("[Snack not found!]");
+                        }
+                        break;
+
+                    case "x":
+                        valid = false;
+                        break;
+                    default:
+                        if (int.TryParse(choice, out int index) && index >= 1 && index <= snacksList.Count)
+                        {
+                            object[] selectedProduct = (object[])snacksList[index - 1];
+
+                            Console.Write($"Enter quantity for {selectedProduct[0]}: ");
+                            int quantity;
+                            if (int.TryParse(Console.ReadLine(), out quantity) && quantity > 0)
+                            {
+                                selectedProduct[2] = quantity;
+                                cart.addCart(selectedProduct);
+                                Console.WriteLine($"{quantity}x {selectedProduct[0]} added to cart!");
+
+                                // Ask what to do next
+                                Console.WriteLine("\nWould you like to:");
+                                Console.WriteLine("[1] Continue shopping in Snacks");
+                                Console.WriteLine("[2] Return to Main Menu");
+                                Console.Write("Enter your choice: ");
+                                string nextChoice = Console.ReadLine();
+                                Console.Clear();
+
+                                if (nextChoice == "2") valid = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid quantity. Please enter a valid number.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Please try again.");
+                        }
+                        break;
+
+                }
+            }
+        }
+    }
+
+    public class Sweets
+
+    {
+        private AddCart cart;
+
+
+        public Sweets(AddCart cart)
+        {
+            this.cart = cart;
+        }
+
+        public void sweetsMenu()
+        {
+
+            ArrayList sweetsList = new ArrayList()
+        {
+            new object[] { "Toblerone Milk Chocolate (100g)", 120.00, 0 },
+            new object[] { "Toblerone Dark Chocolate (100g)", 125.00, 0 },
+            new object[] { "Cadbury Dairy Milk (150g)", 140.00, 0 },
+            new object[] { "Cadbury Fruit & Nut (150g)", 150.00, 0 },
+            new object[] { "KitKat 4-Finger (37g)", 55.00, 0 },
+            new object[] { "KitKat Chunky (50g)", 65.00, 0 },
+            new object[] { "Snickers Bar (50g)", 50.00, 0 },
+            new object[] { "Twix Bar (50g)", 50.00, 0 },
+            new object[] { "Ferrero Rocher (3 pieces)", 150.00, 0 },
+            new object[] { "Reese's Peanut Butter Cups (42g)", 60.00, 0 },
+
+            new object[] { "Gummy Bears (100g)", 85.00, 0 }
+        };
+
+            bool valid = true;
+            while (valid)
+            {
+                Console.WriteLine("============= SWEETS MENU =============");
+                Console.WriteLine("[0] Search an Item");
+                Console.WriteLine("===== PRODUCT ==================================== PRICE =====");
+
+                for (int i = 0; i < sweetsList.Count; i++)
+                {
+                    object[] product = (object[])sweetsList[i];
+                    Console.WriteLine($"{i + 1,2}. {product[0],-40} PHP {product[1],8:F2}");
+                }
+
+                Console.WriteLine("[x] Return to Main Menu");
+                Console.WriteLine("============================================");
+                Console.Write("Enter product number: ");
+                string choice = Console.ReadLine();
+                Console.Clear();
+
+                switch (choice)
+                {
+                    case "0":
+                        Console.Write("Enter sweet name: ");
+                        string search = Console.ReadLine().ToLower();
+
+                        Console.WriteLine("===== PRODUCT ==================================== PRICE =====");
+                        bool found = false;
+                        foreach (object[] product in sweetsList)
+                        {
+                            string productName = product[0].ToString().ToLower();
+                            if (productName.Contains(search))
+                            {
+                                Console.WriteLine($"{product[0],-40} PHP {product[1],8:F2}");
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            Console.WriteLine("[Sweet not found!]");
+                        }
+                        break;
+
+                    case "x":
+                        valid = false;
+                        break;
+
+                    default:
+                        if (int.TryParse(choice, out int index) && index >= 1 && index <= sweetsList.Count)
+                        {
+                            object[] selectedProduct = (object[])sweetsList[index - 1];
+
+                            Console.Write($"Enter quantity for {selectedProduct[0]}: ");
+                            int quantity;
+                            if (int.TryParse(Console.ReadLine(), out quantity) && quantity > 0)
+                            {
+                                selectedProduct[2] = quantity;
+                                cart.addCart(selectedProduct);
+                                Console.WriteLine($"{quantity}x {selectedProduct[0]} added to cart!");
+
+
+                                Console.WriteLine("\nWould you like to:");
+                                Console.WriteLine("[1] Continue shopping in Sweets");
+                                Console.WriteLine("[2] Return to Main Menu");
+                                Console.Write("Enter your choice: ");
+                                string nextChoice = Console.ReadLine();
+                                Console.Clear();
+
+                                if (nextChoice == "2") valid = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid quantity. Please enter a valid number.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Please try again.");
+                        }
                         break;
                 }
             }
